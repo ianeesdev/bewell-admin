@@ -5,13 +5,20 @@ import axios from "axios";
 import moment from "moment";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import Navbar from "@/components/common/Navbar";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
   const [reports, setReports] = useState([]);
   const [currentSelectedReport, setCurrentSelectedReport] = useState(null);
 
   useEffect(() => {
-    fetchReports();
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchReports();
+    } else {
+      router.push("/auth/login");
+    }
   }, []);
 
   const fetchReports = async () => {

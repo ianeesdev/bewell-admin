@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "@/components/common/Navbar";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
   const [videos, setVideos] = useState([]);
   const [source, setSource] = useState("");
 
@@ -42,7 +44,12 @@ const Page = () => {
 
   // Fetch videos on initial render
   useEffect(() => {
-    fetchVideos();
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchVideos();
+    } else {
+      router.push("/auth/login");
+    }
   }, []);
 
   return (

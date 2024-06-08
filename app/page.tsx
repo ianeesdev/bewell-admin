@@ -5,14 +5,21 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaLongArrowAltRight } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const [therapists, setTherapists] = useState([]);
   const [currentSelectedTherapist, setCurrentSelectedTherapist] =
     useState(null);
 
   useEffect(() => {
-    fetchTherapists();
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchTherapists();
+    } else {
+      router.push("/auth/login");
+    }
   }, []);
 
   const fetchTherapists = async () => {
